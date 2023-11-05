@@ -1,0 +1,10 @@
+1. Create Resource Group - Done
+2. Create App Service Plan - Done
+3. Create App Service / web App - Done
+4. Create Github Repo - 
+5. Connect github to azure
+6. Write Script for production in server
+7. Change baseUrl
+8. Build Client Static Files
+9. Push Code to Github
+10. Setup Environment Variables in azure
