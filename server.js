@@ -20,12 +20,13 @@ app.use(express.json());
 app.use(cors())
 
 // Import and use your route files here
+const authRoutes = require('./server/routes/authRoutes');
 const accountRoutes = require('./server/routes/accountRoutes');
 const transactionRoutes = require('./server/routes/transactionRoutes');
 // const ledgerRoutes = require('./routes/ledgerRoutes');
 // const incomeStatementRoutes = require('./routes/incomeStatementRoutes');
 // const balanceSheetRoutes = require('./routes/balanceSheetRoutes');
-
+app.use('/api/auth', authRoutes);
 app.use('/api/accounts', accountRoutes);
 app.use('/api/transactions', transactionRoutes);
 // app.use('/api/ledger', ledgerRoutes);

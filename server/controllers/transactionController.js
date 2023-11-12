@@ -113,6 +113,47 @@ const createAiEntry = async (req, res) => {
 };
 
 
+const createAi = async (req, res) => {
+    try {
+        const { entry } = req.body;
+
+        if (!entry) {
+            return res.status(404).json({ message: 'Entry is Empty!' })
+        }
+
+        //Get Chart of Accounts
+        let accounts = await Account.find();
+
+        let charts = [];
+
+        for (let item of accounts) {
+            let { _id, name, normalBalance, type, balance } = item;
+            charts.push({
+                _id, name, normalBalance, type,
+                balance
+            })
+        }
+
+
+        let aiResponse = await ChatGPTFunction(entry)
+
+        // Remove the extra words and keep only the JSON part
+        let cleanedText = aiResponse.replace(/\/\/.*/g, '')
+        cleanedText = cleanedText.replace(/["'`]/g, '"');
+        const jsonStartIndex = cleanedText.indexOf('{');
+        const jsonString = cleanedText.substring(jsonStartIndex);
+
+        // Parse the JSON string into a JavaScript object
+        const jsonObject = JSON.parse(jsonString);
+
+
+        return res.status(200).json(jsonObject);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'An error occurred while creating the transaction.' });
+    }
+};
+
 const getAllTransactions = async (req, res) => {
     try {
         const { start_date, end_date } = req.query;
@@ -170,5 +211,6 @@ module.exports = {
     createTransaction,
     getAllTransactions,
     getTransactionById,
-    createAiEntry
+    createAiEntry,
+    createAi
 };
